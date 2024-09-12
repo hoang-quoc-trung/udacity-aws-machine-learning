@@ -1,13 +1,3 @@
-"""
-Test json:
-{
-  "image_data": "",
-  "s3_bucket": "udacity-project-3-trunghoang",
-  "s3_key": "final-project/test/bicycle_s_000513.png"
-}
-"""
-
-
 # ----------------- Lambda Function 1: Serialize Image Data -----------------
 
 import json
@@ -24,7 +14,6 @@ def lambda_handler(event, context):
     bucket = event['s3_bucket']
     
     # Download the data from s3 to /tmp/image.png
-    ## TODO: fill in
     s3.download_file(bucket, key, "/tmp/image.png")
     
     # We read the data from a file
@@ -77,9 +66,6 @@ def lambda_handler(event, context):
     return {
         'statusCode': 200,
         'body': {
-            "image_data": event["body"]["image_data"],
-            "s3_bucket": event["body"]["s3_bucket"],
-            "s3_key": event["body"]["s3_key"],
             "inferences": inferences
         }
     }
@@ -94,11 +80,11 @@ import ast
 
 THRESHOLD = .93
 
-
 def lambda_handler(event, context):
     
     # Grab the inferences from the event
     inferences = event['body']['inferences']
+    # Convert str to list
     inferences = ast.literal_eval(inferences)
     
     # Check if any values in our inferences are above THRESHOLD
@@ -113,5 +99,7 @@ def lambda_handler(event, context):
 
     return {
         'statusCode': 200,
-        'body': json.dumps(event)
+        'body': {
+            "inferences": inferences
+        }
     }
