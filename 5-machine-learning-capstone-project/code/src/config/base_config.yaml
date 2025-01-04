@@ -1,0 +1,57 @@
+wandb:
+  # Enable or disable logging to Weights & Biases (wandb)
+  enable: False  # Set to True to enable wandb logging
+  key: ~          # API key for wandb (leave as ~ if not using)
+  project_name: ~ # Wandb project name (leave as ~ if not using)
+
+huggingface_hub:
+  # Enable or disable integration with Hugging Face Hub
+  enable: False       # Set to True to upload models to Hugging Face Hub
+  hub_model_id: ~     # Model ID for Hugging Face Hub (leave as ~ if not using)
+  hub_token: ~        # Token for Hugging Face Hub (leave as ~ if not using)
+
+datasets:
+  # Configuration for dataset processing
+  num_workers: 4        # Number of workers for data loading
+  train:
+    images_root: ~       # Path to the root directory of training images
+    dataframe_path: ~    # Path to the training dataset dataframe
+    batch_size: 8        # Batch size for training
+  eval:
+    images_root: ~       # Path to the root directory of evaluation images
+    dataframe_path: ~    # Path to the evaluation dataset dataframe
+    batch_size: 8        # Batch size for evaluation
+  test:
+    images_root: ~       # Path to the root directory of test images
+    dataframe_path: ~    # Path to the test dataset dataframe
+    batch_size: 8        # Batch size for testing
+
+hyperparams:
+  # Hyperparameters for training and model configuration
+  pretrained_model_name_or_path: hoang-quoc-trung/sumen-base  # Path or ID (Huggingface) of the pretrained model
+  save_dir: ~                      # Directory to save checkpoints and outputs
+  epochs: 10                       # Number of training epochs
+  eval_steps: 50                   # Number of steps between evaluations
+  save_steps: 50                   # Number of steps between model checkpoints
+  logging_steps: 1                 # Logging interval during training
+  gradient_accumulation_steps: 256 # Steps for gradient accumulation
+  random_seed: 0                   # Random seed for reproducibility
+  optimizer:
+    lr: 1e-4                       # Learning rate
+    weight_decay: 1e-2             # Weight decay for the optimizer
+    beta1: 0.95                    # Beta1 parameter for the optimizer
+    beta2: 0.98                    # Beta2 parameter for the optimizer
+  warmup_steps: 600                # Number of warmup steps for the learning rate scheduler
+  max_length: 512                  # Maximum sequence length for model inputs
+  num_beams: 4                     # Number of beams for beam search in generation
+  early_stopping: True             # Enable early stopping during generation
+  length_penalty: 1.0              # Length penalty for sequence generation
+  image_size: [224, 468]           # Target size of input images (height, width)
+  fine_tune_lora_adapter:
+    # Configuration for LoRA fine-tuning (Low-Rank Adaptation)
+    enable: False                  # Enable or disable LoRA fine-tuning
+    adapter_name: fine_tune_handwritten_math_formula  # Name of the adapter
+    alpha: 64                      # Scaling factor for LoRA
+    dropout: 0.05                  # Dropout rate for LoRA
+    r: 32                          # Rank of the LoRA updates
+    target_modules: ["q_proj", "v_proj", "k_proj", "out_proj", "query", "key", "value"]  # Target modules for LoRA
